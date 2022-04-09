@@ -56,8 +56,6 @@ public:
             mDeque.pop_front();
         }
         mCondVarEnq.notify_one();
-        // TODO: won't produce data race?
-        //  write reason next time
         return el;
     }
 

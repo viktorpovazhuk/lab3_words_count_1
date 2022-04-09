@@ -32,15 +32,12 @@ void overworkFile(ThreadSafeQueue<std::string> &filesContents, std::unordered_ma
         std::string file;
         try {
             file = filesContents.deque();
-            // TODO: why equal
             if (std::equal(file.begin(), file.end(), "")) {
                 // don't need mutex because queue is empty => other threads wait
                 timeFindingFinish = get_current_time_fenced();
                 filesContents.enque("");
                 break;
             }
-            // TODO: 1. define our error
-            //  2. return appropriate code of error (from errors.h)
         } catch (std::error_code e) {
             std::cerr << "Error code " << e << ". Occurred while working with queue in thread." << std::endl;
             continue;
