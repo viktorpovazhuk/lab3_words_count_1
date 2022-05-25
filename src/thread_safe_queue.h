@@ -38,7 +38,7 @@ public:
             if ((int)mDeque.size() >= maxNumElements) {
                 mCondVarEnq.wait(lock);
             }
-            mDeque.push_back(el);
+            mDeque.push_back(std::move(el));
         }
         mCondVarDeq.notify_one();
     }
@@ -52,7 +52,7 @@ public:
             while (mDeque.empty()) {
                 mCondVarDeq.wait(lock);
             }
-            el = mDeque.front();
+            el = std::move(mDeque.front());
             mDeque.pop_front();
         }
         mCondVarEnq.notify_one();
