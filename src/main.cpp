@@ -9,6 +9,7 @@
 #include "thread_functions.h"
 #include "write_in_file.h"
 #include "time_measurement.h"
+#include <thread>
 
 namespace fs = std::filesystem;
 
@@ -17,12 +18,14 @@ using std::cout;
 using std::cerr;
 using std::endl;
 
+using TimePoint = std::chrono::time_point<std::chrono::high_resolution_clock>;
+
 //#define PRINT_CONTENT
 #define PARALLEL
 
 void findAndCountWords(int numberOfThreads, std::vector<std::thread> &threads, ThreadSafeQueue<string> &filesContents,
                        std::unordered_map<std::string, int> &wordsDict, std::mutex &globalDictMutex,
-                       std::chrono::time_point<std::chrono::high_resolution_clock> &timeFinding);
+                       TimePoint &timeFinding);
 
 int main(int argc, char *argv[]) {
     string configFilename;
@@ -74,7 +77,7 @@ int main(int argc, char *argv[]) {
     }
 
     auto timeStart = get_current_time_fenced();
-    std::chrono::time_point<std::chrono::high_resolution_clock> timeFindingFinish, timeReadingFinish, timeWritingFinish;
+    TimePoint timeFindingFinish, timeReadingFinish, timeWritingFinish;
 
     ThreadSafeQueue<fs::path> paths;
     ThreadSafeQueue<string> filesContents;
