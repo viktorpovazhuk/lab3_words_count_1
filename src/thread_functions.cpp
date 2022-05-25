@@ -32,7 +32,7 @@ void overworkFile(ThreadSafeQueue<std::string> &filesContents, std::unordered_ma
         std::string file;
         try {
             file = filesContents.deque();
-            if (std::equal(file.begin(), file.end(), "")) {
+            if (file.empty()) {
                 // don't need mutex because queue is empty => other threads wait
                 timeFindingFinish = get_current_time_fenced();
                 filesContents.enque("");
